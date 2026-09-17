@@ -256,6 +256,4 @@ Stated openly, because knowing where a system breaks is part of having built it.
 
 ---
 
-## License
 
-Released under the MIT License. See [LICENSE](LICENSE) for details.
