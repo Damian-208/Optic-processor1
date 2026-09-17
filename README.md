@@ -7,7 +7,6 @@
 [![OpenCV](https://img.shields.io/badge/OpenCV-4.11-5C3EE8?logo=opencv&logoColor=white)](https://opencv.org/)
 [![NumPy](https://img.shields.io/badge/NumPy-2.2-013243?logo=numpy&logoColor=white)](https://numpy.org/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
@@ -34,7 +33,6 @@ It currently targets the Turkish **TYT/AYT** university entrance exam sheet form
 - [Getting started](#getting-started)
 - [Project structure](#project-structure)
 - [Known limitations and roadmap](#known-limitations-and-roadmap)
-- [License](#license)
 
 ---
 
