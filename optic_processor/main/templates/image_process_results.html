@@ -1,0 +1,54 @@
+{%extends 'base.html'%}
+
+
+
+{%block content%}
+
+    {%for dict in data%}
+        <div class="row" style="background-color: azure; border-radius: 10px; border-color: black; border-width: 3px; 
+        border-style: solid; padding: 10px; margin: 10px; ">
+            {%for name, inner_dict in dict.items%}
+                <div class="row">
+                    <div class="col-md-3">
+                        <u><strong>{{name}}:</strong></u> 
+                    </div>
+                
+                    <div class="col-md-9" >
+                        <div class="row d-flex justify-content-start mb-2">
+                            {%for key, value in inner_dict.items%}
+                                {%if key == 'SingleKey'%}
+                                    <div class="col-md-3">
+                                        {{value}}
+                                    </div>
+                                {%elif key == 'Tracked Answers'%}
+                                    <div class="col-md-3">
+                                        <button class="btn btn-info" style="min-width: 200px; border-radius: 10px; border-color: black; border-width: 3px;" onclick="showTrackedAnswers(this)" style="max-width:fit-content;">Details</button>
+                                    </div>
+                                    <div class="col-md-12 d-none">
+                                        {{value}}
+                                    </div>
+                                {%else%}
+                                    <div class="col-md-3">
+                                        {{key}}: {{value}}
+                                    </div>
+                                {%endif%}
+                            {%endfor%}
+                        </div>
+                    </div>
+                </div>
+                <hr style="max-width: 100%; color: black; border-width: 1px">
+                    
+            {%endfor%}
+        </div>
+
+    {%endfor%}
+
+    <script>
+        function showTrackedAnswers(pressedButton) {
+            div_to_show = pressedButton.parentElement.nextElementSibling;
+            div_to_show.classList.toggle('d-none');
+        }
+
+        
+    </script>
+{%endblock%}

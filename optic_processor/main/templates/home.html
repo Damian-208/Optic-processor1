@@ -1,0 +1,142 @@
+{%extends 'base.html'%}
+
+
+
+{%block content%}
+    {% if user.is_authenticated%}
+    <div class="col-md-12">
+        <form method="POST" id="upload-form" action= {% url 'process_image' %} enctype="multipart/form-data">
+            {%csrf_token%}
+            <div class="row d-flex justify-content-center align-items-center">
+                <div class="col-md-2 d-flex justify-content-center my-2">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuBook" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 200px; border-radius: 10px; border-color: black; border-width: 3px;">
+                        Select Book
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#" data-value="BilgiSarmak2020-TYT" onclick="dropdownSelection(this, 'Book')">BilgiSarmak2020-TYT</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="selectedBook" id="selectedBook">
+                </div>
+
+                <div class="col-md-2 d-flex justify-content-center my-2">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuOptic" data-bs-toggle="dropdown" aria-expanded="false" style="min-width: 200px; border-radius: 10px; border-color: black; border-width: 3px;">
+                        Select an Optic
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                        <li><a class="dropdown-item" href="#" data-value="optic_2000" onclick="dropdownSelection(this, 'Optic')">Optic 2000</a></li>
+                        </ul>
+                    </div>
+                    <input type="hidden" name="selectedOptic" id="selectedOptic">
+                </div>
+
+                <div class="col-md-2 d-flex justify-content-center my-2">
+                    <input class="form-control" type="file" id="imageUpload" name="images[]" accept="image/*" multiple style="max-width: min-content;">
+                </div>
+
+                
+                <div class="col-md-2 d-flex justify-content-center my-2">
+                    <button type="submit" class="btn btn-info" style="min-width: 200px; border-radius: 10px; border-color: black; border-width: 3px;">Submit</button>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+                <hr style="max-width: 70%; color: black; border-width: 3px">
+            </div>
+            <br>
+        </form>
+
+
+        <div class="row mb-5">
+            <div class="col-md-12 d-flex justify-content-center">
+                <img id="fetchedImage" src="" alt="Fetched Image" style="max-width: 500px;"/>
+            </div>
+            
+        </div>
+    </div>
+    
+    {%else%}
+    <div class="container">
+        <div class="col-md-12 d-flex justify-content-center">
+            <h1>Login</h1>
+        </div>
+
+        <div class="col-md-12 d-flex justify-content-center">
+            <form  method="POST" action= {% url 'home' %}>
+                {%csrf_token%}
+                <br>
+                <div class="row-md-4 mb-3 d-flex justify-content-center" >
+                    <input style="min-width: 500px;" type="text" class="form-control" name="username" placeholder="User Name" required>
+                </div>
+                <div class="row-md-4 mb-3 d-flex justify-content-center">
+                    <input style="min-width: 500px;" type="password" class="form-control" name="password" placeholder="Password" required>
+                </div>
+                <br>
+                <div class="row-md-4 mb-3 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-secondary">Login</button>
+                </div>
+            </form>
+        </div>
+</div>
+    {%endif%}
+
+
+<script>
+    function dropdownSelection(selectedElement, dropdownIdentifier){
+        event.preventDefault(); // Prevent default anchor behavior
+            
+        // Get the selected text and value
+        const selectedText = selectedElement.textContent;
+        const selectedValue = selectedElement.getAttribute('data-value');
+
+        if(dropdownIdentifier === 'Book'){
+            document.getElementById('selectedBook').value = selectedValue;
+            document.getElementById('dropdownMenuBook').textContent = selectedText;
+        }
+        else if(dropdownIdentifier === 'Optic'){
+            document.getElementById('selectedOptic').value = selectedValue;
+            document.getElementById('dropdownMenuOptic').textContent = selectedText;
+            fetchImage(selectedValue);
+        }
+        console.log(selectedText, selectedValue);
+        
+        // Update the dropdown button text
+        document.getElementById('dropdownMenuButton').textContent = selectedText;
+
+        // Update the hidden input value
+        document.getElementById('selectedItem').value = selectedValue;
+
+       
+        
+
+    }   
+
+    function fetchImage(selectedValue) {
+        // Replace 'your_image_endpoint' with the actual URL of your image API or server
+        const imageUrl = `serve-image?item=${selectedValue}`;
+
+        // Send GET request to fetch the image
+        fetch(imageUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.blob(); // Return the image as a blob
+            })
+            .then(imageBlob => {
+                // Create a URL for the image blob and display it
+                const imageObjectURL = URL.createObjectURL(imageBlob);
+                const imgElement = document.getElementById('fetchedImage');
+                imgElement.src = imageObjectURL;
+                imgElement.style.display = 'block';
+                console.log('Image retrieved successfully!!')
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
+</script>
+
+{%endblock%}
+
